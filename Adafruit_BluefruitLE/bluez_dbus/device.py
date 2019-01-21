@@ -51,6 +51,7 @@ class BluezDevice(Device):
         self._connected = threading.Event()
         self._disconnected = threading.Event()
         self._props.connect_to_signal('PropertiesChanged', self._prop_changed)
+        self._manufacturer_data = None
 
     def _prop_changed(self, iface, changed_props, invalidated_props):
         # Handle property changes for the device.  Note this call happens in
@@ -164,3 +165,13 @@ class BluezDevice(Device):
     def _adapter(self):
         """Return the DBus path to the adapter that owns this device."""
         return self._props.Get(_INTERFACE, 'Adapter')
+
+    @property
+    def _adapter(self):
+        """Return the DBus path to the adapter that owns this device."""
+        return self._props.Get(_INTERFACE, 'Adapter')
+
+    @property
+    def manufacturer_data(self):
+        """Return the manufacturer data."""
+        return self._props.Get(_INTERFACE, 'ManufacturerData')

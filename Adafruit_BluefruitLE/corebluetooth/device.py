@@ -41,6 +41,7 @@ class CoreBluetoothDevice(Device):
         """
         self._peripheral = peripheral
         self._advertised = []
+        self._manufacturer_data = None
         self._discovered_services = set()
         self._char_on_changed = {}
         self._rssi = None
@@ -97,6 +98,8 @@ class CoreBluetoothDevice(Device):
         # name from advertisement data.
         if 'kCBAdvDataServiceUUIDs' in advertised:
             self._advertised = self._advertised + map(cbuuid_to_uuid, advertised['kCBAdvDataServiceUUIDs'])
+        if 'kCBAdvDataManufacturerData' in advertised:
+            self._manufacturer_data = advertised['kCBAdvDataManufacturerData']
 
     def _characteristics_discovered(self, service):
         """Called when GATT characteristics have been discovered."""
@@ -193,3 +196,8 @@ class CoreBluetoothDevice(Device):
         if not self._rssi_read.wait(timeout_sec):
             raise RuntimeError('Exceeded timeout waiting for RSSI value!')
         return self._rssi
+
+    @property
+    def manufacturer_data(self):
+        """Return the manufacturer data."""
+        return self._manufacturer_data

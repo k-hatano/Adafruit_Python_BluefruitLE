@@ -84,6 +84,11 @@ class Device(object):
         """Return the RSSI signal strength in decibels."""
         raise NotImplementedError
 
+    @abc.abstractproperty
+    def manufacturer_data(self):
+        """Return the manufacturer data."""
+        raise NotImplementedError
+
     def find_service(self, uuid):
         """Return the first child service found that has the specified
         UUID.  Will return None if no service that matches is found.
